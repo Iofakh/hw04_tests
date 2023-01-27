@@ -1,5 +1,6 @@
 from http import HTTPStatus
 from django.test import Client, TestCase
+from django.urls import reverse
 
 from ..models import Post, Group, User
 
@@ -22,19 +23,25 @@ class PostURLTests(TestCase):
                   "различные взаимодействия с ним")
         )
         cls.templates = [
-            "/",
-            f"/group/{cls.group.slug}/",
-            f"/profile/{cls.user}/",
-            f"/posts/{cls.post.id}/",
+            reverse("posts:index"),
+            reverse("posts:posts", kwargs={"slug": cls.group.slug}),
+            reverse("posts:profile", kwargs={"username": cls.post.author}),
+            reverse("posts:post_detail", kwargs={"post_id": cls.post.id}),
         ]
         cls.templates_url_names = {
-            "/": "posts/index.html",
-            f"/group/{cls.group.slug}/": "posts/group_list.html",
-            f"/profile/{cls.user.username}/": "posts/profile.html",
-            f"/posts/{cls.post.id}/": "posts/post_detail.html",
-            f"/posts/{cls.post.id}/edit/": "posts/create_post.html",
-            "/create/": "posts/create_post.html",
+            reverse("posts:index"): "posts/index.html",
+            reverse("posts:posts", kwargs={"slug": cls.group.slug}
+                    ): "posts/group_list.html",
+            reverse("posts:profile", kwargs={"username": cls.post.author}
+                    ): "posts/profile.html",
+            reverse("posts:post_detail", kwargs={"post_id": cls.post.id}
+                    ): "posts/post_detail.html",
+            reverse("posts:post_edit", kwargs={"post_id": cls.post.id}
+                    ): "posts/create_post.html",
+            reverse("posts:post_create"): "posts/create_post.html",
         }
+
+            
 
     def setUp(self):
         self.guest_client = Client()

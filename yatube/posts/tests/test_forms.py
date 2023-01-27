@@ -24,7 +24,7 @@ class PostFormTests(TestCase):
                               kwargs={"username": self.user.username})
         )
         self.assertEqual(Post.objects.count(), posts_count + 1)
-        self.assertTrue(Post.objects.filter(text="Тестовый текст").exists())
+        self.assertTrue(Post.objects.filter(**form_data).exists())
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_post_edit(self):
