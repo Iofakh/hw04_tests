@@ -41,8 +41,6 @@ class PostURLTests(TestCase):
             reverse("posts:post_create"): "posts/create_post.html",
         }
 
-            
-
     def setUp(self):
         self.guest_client = Client()
         self.authorized_client = Client()
